@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Adapter;
@@ -19,6 +20,10 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.galee.model.Gali;
 import com.galee.provider.FakeGaliProvider;
@@ -42,6 +47,18 @@ public class GaliListActivity extends Activity {
     		galiProvider.getGalis()
     );
     lv.setAdapter(simpleAdpt);
+    
+    ParseQuery<ParseObject> query = ParseQuery.getQuery("Galee");
+    query.findInBackground(new FindCallback<ParseObject>() {
+      public void done(List<ParseObject> scoreList, ParseException e) {
+        if (e == null) {
+        	Log.d("score", "Retrieved " + scoreList.size() + " scores");
+        	// Access the name by calling galee.GetString("name");
+        } else {
+        	Log.d("score", "Error: " + e.getMessage());
+        }
+      }
+    });
   }
 
   @Override
